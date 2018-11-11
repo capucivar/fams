@@ -222,7 +222,7 @@ class RPCUtil {
         curl_close($ch); //释放curl句柄
         return $output;
     }
-
+/*
     public static function sendRegCode($mobile, $sms) {
         $file_contents = '';
         $url = "http://utf8.sms.webchinese.cn/?Uid=softshare&Key=f2c8b426087f123ff923&smsMob=$mobile&smsText=$sms";
@@ -238,5 +238,5 @@ class RPCUtil {
             curl_close($ch);
         }
         return $file_contents;
-    }
+    }*/
 }

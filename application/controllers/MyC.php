@@ -17,6 +17,18 @@ class MyC extends CI_Controller {
     }
 
     /**
+     * 检查参数
+     */
+    public function checkParam($checkParam,$request) {
+//        return !isset($_REQUEST[$name]) ? "" : $_REQUEST[$name];
+        foreach ($checkParam as $key){
+            if (!array_key_exists($key,$request))
+                return false;
+        }
+        return true;
+    }
+
+    /**
      * 获取请求的参数
      */
     public function getParam($name) {

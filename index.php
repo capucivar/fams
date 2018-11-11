@@ -6,7 +6,8 @@ define('APP_PATH_C', APP_PATH . "/application/controllers/");
 define('APP_PATH_V', APP_PATH . "/application/views/");
 define('APP_PATH_L', APP_PATH . "/application/libraries/");
 define('APP_PATH_LOG', APP_PATH . "/application/logs/");
-define('CDN_URL', "http://dmy-setup-android.b0.upaiyun.com/cdn");/* //cdn.bootcss.com */
+define('CDN_URL', "/static/cdn");
+// define('CDN_URL', "http://dmy-setup-android.b0.upaiyun.com/cdn");/* //cdn.bootcss.com */
 
 date_default_timezone_set('Asia/Shanghai');
 

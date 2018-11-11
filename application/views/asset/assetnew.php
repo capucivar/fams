@@ -1,94 +1,146 @@
+<?php
+//    print_r($asset);
+?>
 <div class="box box-primary">
     <div class="box-body"> 
         <br/>
         <div class="col-sm-2"></div>
         <div class="col-sm-7">
-            <form id="client-form" role="form" class="form-horizontal"> 
+            <form id="assetForm" role="form" class="form-horizontal">
+                <input id="assetid" name="assetid" type="text" class="form-control" value="<?=$asset['assetid']?>" style="display: none;" >
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">分类</label>
+                    <div class="col-sm-10">
+                        <select class="selectpicker" data-live-search="true" id="assetType" name="assetType" onchange="selectOnchange(this)">
+                            <option value="0" >请选择</option>
+                        </select>&nbsp;&nbsp;
+                        <select class="selectpicker" data-live-search="true" id="assetCType" name="assetCType" onchange="selectOnchange2(this)">
+                            <option value="0" >请选择</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label class="col-sm-2 control-label">物品编码</label>
                     <div class="col-sm-4">
-                        <input id="ANAME" name="ANAME" type="text" class="form-control" >
+                        <input id="assetcode" name="assetcode" type="text" class="form-control" value="<?=$asset['assetcode']?>" >
                     </div>
                     
                     <label class="col-sm-2 control-label">物品名称</label>
                     <div class="col-sm-4">
-                        <input id="WXID" name="WXID" type="text" class="form-control"  >
-                    </div>
-                </div> 
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">分类</label>
-                    <div class="col-sm-10"> 
-                        <select id="loc_province" name="areaProvince" class="form-control"> </select> 
+                        <input id="assetname" name="assetname" type="text" class="form-control"  value="<?=$asset['assetname']?>"  >
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-sm-2 control-label">品牌</label>
                     <div class="col-sm-4">
-                        <input id="CELLPHONE" name="CELLPHONE" type="text" class="form-control" >
+                        <input id="brand" name="brand" type="text" class="form-control" value="<?=$asset['brand']?>"  >
                     </div>
                      <label class="col-sm-2 control-label">规格</label>
                     <div class="col-sm-4">
-                        <input id="UNO" name="UNO" type="text" class="form-control" >
+                        <input id="size" name="size" type="text" class="form-control" value="<?=$asset['size']?>"  >
                     </div>
                 </div> 
                 <div class="form-group">
                     <label class="col-sm-2 control-label">库存数量</label>
                     <div class="col-sm-4">
-                        <input id="CELLPHONE" name="CELLPHONE" type="text" class="form-control" >
+                        <input id="storenum" name="storenum" type="text" class="form-control" value="<?=$asset['storenum']?>"  >
                     </div>
                      <label class="col-sm-2 control-label">单价</label>
                     <div class="col-sm-4">
-                        <input id="UNO" name="UNO" type="text" class="form-control" >
+                        <input id="unitprice" name="unitprice" type="number" class="form-control" value="<?=$asset['unitprice']?>"  >
                     </div>
                 </div>
                  <div class="form-group">
                     <label class="col-sm-2 control-label">备注</label>
                     <div class="col-sm-10">
-                        <input id="REMARK" name="MARK" placeholder="50字以内" type="text" class="form-control">
+                        <input id="note" name="note" placeholder="50字以内" type="text" class="form-control" value="<?=$asset['note']?>" >
                     </div>
                 </div>
-                
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">是否易耗品</label>
+                    <div class="col-sm-10">
+                        <input type="checkbox" id="isdisposable" >
+                    </div>
+                </div>
             </form>
         </div>
         <div class="col-sm-3"></div>
     </div><!-- /.box-body -->
 </div><!-- /.box -->
 
-<button type="button" id="btn-save" class="btn btn-primary btn-lg ba-center" onclick="saveAgent();">
+<button type="button" id="btn-save" class="btn btn-primary btn-lg ba-center" onclick="saveAsset();">
     保存入库
 </button>
 
-<script src="/static/js/location.js"></script>
+
+<link href="/static/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet">
+<script type="text/javascript" src="/static/plugins/bootstrap-select/bootstrap-select.js"></script>
+
 <script type="text/javascript">
-    $(function () { 
-        var agentData = '<?= $lowerAgent?>';
-        var locs = [0, 0, 0];
-        if (agentData != "") { 
-            var agentObj = JSON.parse(agentData);
-            $.each(agentObj, function (k, v) {
-                console.info(k);
-                console.info(v);
-                $("#client-form input[name='" + k + "']").val(v);
-            });
-            $("#type").val(agentObj["type"]);
-            if(agentObj["AREA"]!=null){
-                locs = agentObj["AREA"].split(",");
-                if(locs.length!=3)
-                    locs = [0, 0, 0];
-            }
-            $("h1").html("修改代理商<small>" + $("h1 small").html() + "</small>");
-            $("#ANAME").attr("readonly",true);
-            $("#WXID").attr("readonly",true);
-            $("#WXNICKNAME").attr("readonly",true);
-            $("#CELLPHONE").attr("readonly",true);
-            $("#UNO").attr("readonly",true);
-            $('select').prop('disabled',true); 
-        }
-        showLocation(locs[0], locs[1], locs[2]);
+    var typeid = <?= empty($asset["typeid"])?0:$asset["typeid"]?>;
+    var typeid2 = <?= empty($asset["typeid2"])?0:$asset["typeid2"]?>;
+    var selectLevel = typeid==typeid2?1:2;
+    var isdisposable = <?= empty($asset["isdisposable"])?0:$asset["isdisposable"]?>;
+    $(function () {
+        $("#assetType").selectpicker({
+            width:260
+        });
+
+        $("#assetCType").selectpicker({
+            width:260
+        });
+        bindTypelist();
+        bindChildTypelist(typeid2);
+        if (isdisposable=="1")
+            $("#isdisposable").attr("checked",true);
     });
-    
-    function saveAgent() {
+    function bindTypelist() {
+        $.post("/AssetC/getParentType", {}, function (response) {
+            var data = JSON.parse(response);
+            $.each(data.rows, function (i, n) {
+                var selected="";
+                if (typeid2==n.typeid)
+                    selected=" selected";
+                $("#assetType").append(" <option value='"+ n.typeid +"' "+ selected+" >" + n.typename + "</option>");
+            })
+            $("#assetType").selectpicker('refresh');
+        });
+    }
+    function bindChildTypelist(parentid) {
+        $("#assetCType").empty();
+        $("#assetCType").append('<option value="0">请选择</option>');
+        $.post("/AssetC/getChildType", {parentid:parentid}, function (response) {
+            var data = JSON.parse(response);
+            $.each(data.rows, function (i, n) {
+                var selected="";
+                if (selectLevel==2 && typeid==n.typeid)
+                    selected=" selected";
+                $("#assetCType").append(" <option value='"+ n.typeid +"' "+ selected+" >" + n.typename + "</option>");
+            })
+            $("#assetCType").selectpicker('refresh');
+        });
+
+    }
+    function selectOnchange(obj) {
+        var id = obj.value;
+        bindChildTypelist(id);
+        if ($("#assetid").val()!="")
+            return;
+        $.post("/AssetC/getAssetCode", {typeid:id}, function (response) {
+            $("#assetcode").val(response);
+        });
+    }
+    function selectOnchange2(obj) {
+        if ($("#assetid").val()!="")
+            return;
+        var id = obj.value;
+        $.post("/AssetC/getAssetCode", {typeid:id}, function (response) {
+            $("#assetcode").val(response);
+        });
+    }
+    function saveAsset() {
         var $btn = $('#btn-save');
         if ($btn.hasClass("disabled")) return;
 
@@ -96,40 +148,55 @@
         $btn.html('<i class="fa fa-spinner fa-pulse"></i>提交中');
 
         // 验证必填项
-        if ($("#WXID").val() == "") {
-            baModalTipShow("提示", "微信号不可为空", "d");
+        if ($("#assetType").val() == 0) {
+            baModalTipShow("提示", "请选择类别", "d");
             $btn.html('保存');
             $btn.removeClass("disabled");
             return;
         } 
-        if ($("#WXNICKNAME").val() == "") {
-            baModalTipShow("提示", "微信昵称不可为空", "d");
+        if ($("#assetcode").val() == "") {
+            baModalTipShow("提示", "请输入资产编码", "d");
             $btn.html('保存');
             $btn.removeClass("disabled");
             return;
         }
-        if ($("#CELLPHONE").val() == "") {
-            baModalTipShow("提示", "手机号不可为空", "d");
+        if ($("#assetname").val() == "") {
+            baModalTipShow("提示", "请输入资产名称", "d");
             $btn.html('保存');
             $btn.removeClass("disabled");
             return;
         }
-        if ($("#CELLPHONE").val().length!=11) {
-            baModalTipShow("提示", "手机号码位数不正确", "d");
+        if ($("#brand").val() == "") {
+            baModalTipShow("提示", "请输入品牌", "d");
             $btn.html('保存');
             $btn.removeClass("disabled");
             return;
-        } 
-        if ($("#UNO").val() == "") {
-            baModalTipShow("提示", "游戏ID不可为空", "d");
+        }
+        if ($("#size").val() == "") {
+            baModalTipShow("提示", "请输入规格", "d");
+            $btn.html('保存');
+            $btn.removeClass("disabled");
+            return;
+        }
+        if ($("#storenum").val() == "") {
+            baModalTipShow("提示", "请输入库存数量", "d");
+            $btn.html('保存');
+            $btn.removeClass("disabled");
+            return;
+        }
+        if ($("#unitprice").val() == "") {
+            baModalTipShow("提示", "请输入单价", "d");
             $btn.html('保存');
             $btn.removeClass("disabled");
             return;
         }
 
         // 提交表单
-        var formData = $("#client-form").serializeArray();
-        $.post("/Agent/saveAgent", formData, function (response) {
+        var formData = $("#assetForm").serializeArray();
+        formData[formData.length]={name:"typeid",value:$("#assetCType").val()==0?$("#assetType").val():$("#assetCType").val()};
+        formData[formData.length]={name:"typeid2",value:$("#assetCType").val()==0?$("#assetCType").val():$("#assetType").val()};
+        formData[formData.length]={name:"isdisposable",value:$("#isdisposable").is(":checked")?1:0};
+        $.post("/AssetC/saveAsset", formData, function (response) {
             if (response.code != "1") {
                 baModalTipShow("错误", response.message, "d");
                 $btn.html('保存');
@@ -137,13 +204,7 @@
                 return;
             }
             baModalTipShow("提示", "保存成功", "s", function () {
-                var l = '<?= $agent["LEVEL"]?>';
-                var a = '<?= SysDict::$ANGENTLEVEL["admin"]?>';
-                var h = '<?= SysDict::$ANGENTLEVEL["head"]?>';
-                if(l==a || l==h)
-                    window.location = "/AgentAdmin/fagentList";
-                else
-                    window.location = "/Agent/newAgentInfo/"+$("#UNO").val();
+                window.location = "/AssetC";
             });
         });
     }

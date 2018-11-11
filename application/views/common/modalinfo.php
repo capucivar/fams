@@ -55,6 +55,36 @@
 </div>
 <!-- /. Tip modal -->
 
+<!-- Form Modal -->
+<div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="z-index: 1150 !important;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="formModalTitle">
+                    表单标题
+                </h4>
+            </div>
+            <div class="modal-body" id="formModalContent">
+                表单内容
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" onclick="$('#formModal').modal('toggle');">
+                    取消
+                </button>
+                <button id="formModalBtn" type="button" class="btn btn-primary">
+                    确定
+                </button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /. Tip modal -->
+
 <!-- Loading Modal -->
 <div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="z-index: 1150 !important;">
     <div class="modal-dialog">
@@ -107,11 +137,32 @@
         $('#warningModal').modal({backdrop: 'static', keyboard: false});
     }
 
+
+    //显示Form表单窗口 param {"input-id","value"}
+    function baModalFormShow(title, content,arg, okOnClickCallBack) {
+        $('#formModalTitle').html(baGetInfoArgs(arg) + title);
+        $('#formModalContent').html(content);
+        $("#formModalBtn").unbind("click");
+        $('#formModalBtn').click(function () {
+            if (typeof okOnClickCallBack == "function") {
+                okOnClickCallBack();
+            } else {
+                alert("没实现警告弹窗的回调方法");
+            }
+        });
+
+        $('#formModal').modal({backdrop: 'static', keyboard: false});
+
+    }
+
     //切换警告窗口显示
     function baModalWarningToggle() {
         $('#warningModal').modal("hide");
     }
-
+    //切换Form窗口显示
+    function baModalFormToggle() {
+        $('#formModal').modal("hide");
+    }
     //获取提示标志
     function baGetInfoArgs(arg) {
         switch (arg) {

@@ -31,3 +31,15 @@ DEBUG - 2018-11-08 22:08:16 --> Total execution time: 0.0379
 DEBUG - 2018-11-08 22:08:17 --> UTF-8 Support Enabled
 DEBUG - 2018-11-08 22:08:17 --> Global POST, GET and COOKIE data sanitized
 DEBUG - 2018-11-08 22:08:17 --> Total execution time: 0.0129
+DEBUG - 2018-11-08 22:54:32 --> UTF-8 Support Enabled
+DEBUG - 2018-11-08 22:54:32 --> No URI present. Default controller set.
+DEBUG - 2018-11-08 22:54:32 --> Global POST, GET and COOKIE data sanitized
+ERROR - 2018-11-08 22:54:32 --> Severity: Notice --> Undefined property: Home::$NoticeModel /Users/capucivar/Documents/GraduationDesign/github/fams/application/controllers/Home.php 20
+ERROR - 2018-11-08 22:54:32 --> Severity: error --> Exception: Call to a member function getNoticeNew() on null /Users/capucivar/Documents/GraduationDesign/github/fams/application/controllers/Home.php 20
+ERROR - 2018-11-08 22:54:32 --> Severity: Warning --> Cannot modify header information - headers already sent by (output started at /Users/capucivar/Documents/GraduationDesign/github/fams/application/controllers/BaseC.php:30) /Users/capucivar/Documents/GraduationDesign/github/fams/system/core/Common.php 573
+DEBUG - 2018-11-08 22:54:32 --> UTF-8 Support Enabled
+DEBUG - 2018-11-08 22:54:32 --> No URI present. Default controller set.
+DEBUG - 2018-11-08 22:54:32 --> Global POST, GET and COOKIE data sanitized
+ERROR - 2018-11-08 22:54:32 --> Severity: Notice --> Undefined property: Home::$NoticeModel /Users/capucivar/Documents/GraduationDesign/github/fams/application/controllers/Home.php 20
+ERROR - 2018-11-08 22:54:32 --> Severity: error --> Exception: Call to a member function getNoticeNew() on null /Users/capucivar/Documents/GraduationDesign/github/fams/application/controllers/Home.php 20
+ERROR - 2018-11-08 22:54:32 --> Severity: Warning --> Cannot modify header information - headers already sent by (output started at /Users/capucivar/Documents/GraduationDesign/github/fams/application/controllers/BaseC.php:30) /Users/capucivar/Documents/GraduationDesign/github/fams/system/core/Common.php 573

@@ -4,18 +4,18 @@
             <div class="box-body">
                 <div id="TOOLBAR" class="btn-group">
 
-                    <button id="newBtn" title="新增类别" type="button" class="btn btn-default" onclick="newNote();">
-                        新增类别
+                    <button title="新增资产" type="button" class="btn btn-default" onclick="newNote();">
+                        新增下级
                     </button>
-                    <button title="修改类别" type="button" class="btn btn-default" onclick="editNote();">
+                    <button title="修改资产" type="button" class="btn btn-default" onclick="editNote();">
                         修改
                     </button>
-                    <button title="删除类别" type="button" class="btn btn-default" onclick="delNote();">
+                    <button title="修改资产" type="button" class="btn btn-default" onclick="delNote();">
                         删除
                     </button>
                 </div>
 
-                <table id="typeTable">
+                <table id="orgTable">
 
                 </table>
 
@@ -36,25 +36,25 @@
 
 <script type="text/javascript">
     $(function () {
-        var $table = $("#typeTable");
+        var $table = $("#orgTable");
         $table.bootstrapTable({
-            url:'/AssetTypeC/getAssetType',
+            url:'/OrganizationC/getOrganList',
             striped:true,
             sidePagenation:'server',
-            idField:'typeid', //ID字段
+            idField:'deptid', //ID字段
             columns:[
                 {
                     field: 'ck',
                     checkbox: true
                 },{
-                    field:'typename',
-                    title:'类别名称'
+                    field:'deptname',
+                    title:'名称'
                 },{
-                    field:'typecode',
-                    title:'编号'
+                    field:'deptid',
+                    title:'ID'
                 }
             ],
-            treeShowField: 'typename',
+            treeShowField: 'deptname',
             parentIdField: 'parentid',//上级ID
             singleSelect:true,
             clickToSelect:true,
@@ -70,45 +70,41 @@
                 });
             },
             onClickRow: function (data) {
-                var level = data._level;
-                if (level>0)
-                    $('#newBtn').prop('disabled', true);
-                else
-                    $('#newBtn').prop('disabled', false);
+                $("#deptname").attr("value",data.deptname);
             }
         });
     })
-    //新增类别
+    //新增下级节点
     function newNote() {
-        var rows = $('#typeTable').bootstrapTable('getSelections');
-        var typename = "-";
-        if (rows.length > 0){
-            typename = rows[0]["typename"];
+        var rows = $('#orgTable').bootstrapTable('getSelections');
+        if (rows.length < 1){
+            baModalTipShow("提示", "请先选择上级节点", "d", function () {
+                baModalTipToggle();
+            });
+            return;
         }
-        var content = '上级类别：'+typename
-            +'<form id="typeForm" role="form" class="form-horizontal">'
+
+        var content = '<div id="organFormContent">'
+            +'<form id="organForm" role="form" class="form-horizontal">'
             +'<div class="form-group">'
-            +'<label class="col-sm-4 control-label">类别名称</label>'
-            +'<div class="col-sm-6"> <input id="typename" name="typename" type="text" class="form-control" > </div>'
+            +'<label class="col-sm-4 control-label">部门名称</label>'
+            +'<div class="col-sm-6">'
+            +'<input id="deptname" name="deptname" type="text" class="form-control" >'
             +'</div>'
-            +'<div class="form-group">'
-            +'<label class="col-sm-4 control-label">类别编码</label>'
-            +'<div class="col-sm-6"> <input id="typecode" name="typecode" type="text" class="form-control" > </div>'
             +'</div>'
-            +'</form>' ;
-        baModalFormShow("新增资产类别", content, "i", function () {
-            console.log("弹窗调用");
+            +'</form>'
+            +'</div>';
+        baModalFormShow("新增组织架构信息", content, "i", function () {
             baModalFormToggle();
-            var parentid = rows.length>0?rows[0]["typeid"]:0;
-            var typename = $("#typename").val();
-            var typecode = $("#typecode").val();
-            $.post("/AssetTypeC/newType", {parentid: parentid,typename:typename,typecode:typecode}, function (response) {
+            var parentid = rows[0]["deptid"];
+            var name = $("#deptname").val();
+            $.post("/OrganizationC/newOrganInfo", {parentid: parentid,deptname:name}, function (response) {
                 if (response.code != "1") {
                     baModalTipShow("错误", response.message, "d");
                 } else {
                     baModalTipShow("提示", "添加成功", "s", function () {
                         baModalTipToggle();
-                        $('#typeTable').bootstrapTable('refresh');
+                        $('#orgTable').bootstrapTable('refresh');
                     });
                 }
             });
@@ -116,39 +112,35 @@
     }
     //修改节点
     function editNote() {
-        var rows = $('#typeTable').bootstrapTable('getSelections');
+        var rows = $('#orgTable').bootstrapTable('getSelections');
         if (rows.length < 1){
-            baModalTipShow("提示", "请先选择要修改的类别", "d", function () {
+            baModalTipShow("提示", "请先选择要修改的节点", "d", function () {
                 baModalTipToggle();
             });
             return;
         }
-        var typeid = rows[0]["typeid"];
-        var typename = rows[0]["typename"];
-        var typecode = rows[0]["typecode"];
-        var content = ''
-            +'<form id="typeForm" role="form" class="form-horizontal"> <input id="typeid" name="typeid" type="text" class="form-control" style="display: none" value="'+typeid+'" >'
+        var deptid = rows[0]["deptid"];
+        var deptname = rows[0]["deptname"];
+        var content = '<div id="organFormContent">'
+            +'<form id="organForm" role="form" class="form-horizontal">'
             +'<div class="form-group">'
-            +'<label class="col-sm-4 control-label">类别名称</label>'
-            +'<div class="col-sm-6"> <input id="typename" name="typename" type="text" class="form-control" value="'+typename+'" > </div>'
+            +'<label class="col-sm-4 control-label">部门名称</label>'
+            +'<div class="col-sm-6">'
+            +'<input id="deptname" name="deptname" type="text" class="form-control" value="'+deptname+'" >'
             +'</div>'
-            +'<div class="form-group">'
-            +'<label class="col-sm-4 control-label">类别编码</label>'
-            +'<div class="col-sm-6"> <input id="typecode" name="typecode" type="text" class="form-control" value="'+typecode+'"> </div>'
             +'</div>'
-            +'</form>' ;
-        baModalFormShow("修改资产类别信息", content, "i", function () {
+            +'</form>'
+            +'</div>';
+        baModalFormShow("修改组织架构信息", content, "i", function () {
             baModalFormToggle();
-            var typeid = $("#typeid").val();
-            var typename = $("#typename").val();
-            var typecode = $("#typecode").val();
-            $.post("/AssetTypeC/updateType", {typeid:typeid,typename:typename,typecode:typecode}, function (response) {
+            var name = $("#deptname").val();
+            $.post("/OrganizationC/updateOrganInfo", {deptid: deptid,deptname:name}, function (response) {
                 if (response.code != "1") {
                     baModalTipShow("错误", response.message, "d");
                 } else {
                     baModalTipShow("提示", "修改成功", "s", function () {
                         baModalTipToggle();
-                        $('#typeTable').bootstrapTable('refresh');
+                        $('#orgTable').bootstrapTable('refresh');
                     });
                 }
             });
@@ -156,23 +148,23 @@
     }
     //删除节点
     function delNote() {
-        var rows = $('#typeTable').bootstrapTable('getSelections');
+        var rows = $('#orgTable').bootstrapTable('getSelections');
         if (rows.length < 1){
-            baModalTipShow("提示", "请先选择要删除的类别", "d", function () {
+            baModalTipShow("提示", "请先选择要删除的节点", "d", function () {
                 baModalTipToggle();
             });
             return;
         }
-        var typeid = rows[0]["typeid"];
-        baModalWarningShow("警告", "是否确定删除所选类别", "q", function () {
+        var deptid = rows[0]["deptid"];
+        baModalWarningShow("警告", "是否确定删除所选记录", "q", function () {
             baModalWarningToggle();
-            $.post("/AssetTypeC/delType", {typeid: typeid}, function (response) {
+            $.post("/OrganizationC/delOrgan", {deptid: deptid}, function (response) {
                 if (response.code != "1") {
                     baModalTipShow("错误", response.message, "d");
                 } else {
                     baModalTipShow("提示", "删除成功", "s", function () {
                         baModalTipToggle();
-                        $('#typeTable').bootstrapTable('refresh');
+                        $('#orgTable').bootstrapTable('refresh');
                     });
                 }
             });

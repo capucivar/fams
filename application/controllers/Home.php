@@ -14,24 +14,8 @@ class Home extends BaseC {
         $data["menuCatagery"] = "主页";
         $data["menuSub"]      = "首页";
         $data["menuDetail"]   = "";
-        $data["notice"] = "";
-        $data["mCount"] = "";//下级数量
-        $data["earnings"] = "0";
-        $notice = $this->NoticeModel->getNoticeNew();//获取最新一条公告内容
-        if($notice!=""){
-            $data["notice"] = $notice["CONTENT"];
-        }
-        if($this->agent["LEVEL"]==SysDict::$ANGENTLEVEL["one"]){
-            //一级代理商查询下级代理商
-            $data["mCount"] = $this->AgentModel->getLowerAgentListDataCount($this->agent["AID"],"");
-        }else if($this->agent["LEVEL"]==SysDict::$ANGENTLEVEL["two"]){
-            //二级代理商查询绑定的玩家数量
-            $data["mCount"] = $this->UserModel->getUserListDataCount($this->agent["AID"],"");
-            //代开房卡收益
-            $data["earnings"] = "123";
-        }
         $this->load->view('common/header', $data);
-        parent::includeMenu();
+        $this->load->view('common/menu');
         $this->load->view('common/wrapper');
         $this->load->view('home');
         $this->load->view('common/modalinfo');
@@ -44,18 +28,6 @@ class Home extends BaseC {
 
     public function login() {
         $this->load->view('login');
-    }
-    public function flogin() {  
-        $isfirst = $this->agent["ISFIRST"]==1?true:false; 
-        if($isfirst){
-            $data["aid"] = $this->agent["AID"];
-            $data["cell"] = $this->agent["CELLPHONE"];
-//            delete_cookie(SysDict::$AUTH_COOKIE_NAME);
-            $this->load->view('loginfirst',$data);
-            $this->load->view('common/modalinfo'); 
-        }else{
-            echo "<script>window.location.href='/home/account';</script>";
-        } 
     }
 
     public function signout() {
@@ -74,23 +46,6 @@ class Home extends BaseC {
         $this->load->view('common/wrapper');
         $this->load->view('account');
         $this->load->view('common/modalinfo');
-        $this->load->view('common/footer');
-    } 
-    public function invalid() { 
-        // 如果当前账户未冻结，则跳转到 Dashboard
-//        if ($this->agent["STATE"] != SysDict::$AGENTSTATE["invalid"]) {
-//            echo "<script type='text/javascript'>window.location.href='/user/account';</script>";
-//            return;
-//        }
-        $data["agent"]        = $this->agent;
-        $data["menuCatagery"] = "主页";
-        $data["menuSub"]      = "账户冻结";
-        $data["menuDetail"]   = "信息概览";
-
-        $this->load->view('common/header', $data);
-        $this->load->view('common/menu');
-        $this->load->view('common/wrapper');
-        $this->load->view('invalid');
         $this->load->view('common/footer');
     }
 

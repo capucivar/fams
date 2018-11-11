@@ -7,18 +7,15 @@
                     <button title="新增资产" type="button" class="btn btn-default" onclick="javascript:window.location.href='/AssetC/newAsset'">
                         新增 
                     </button> 
-                    <button title="修改资产" type="button" class="btn btn-default" onclick="editAgent();">
+                    <button title="修改资产" type="button" class="btn btn-default" onclick="editAsset();">
                         修改 
-                    </button> 
-                     <button title="修改资产" type="button" class="btn btn-default" onclick="editAgent();">
-                        报废 
-                    </button> 
+                    </button>
                 </div>
                 <table id="mainTable"
                        data-toggle="table"
                        data-url="/AssetC/getAsset"
                        data-pagination="true"
-                       data-side-pagination="server"
+                       data-side-pagination="client"
                        data-page-list="[5, 10, 20, 50, 100, 200]"
                        data-search="true"
                        data-show-refresh="true"
@@ -27,19 +24,23 @@
                        data-single-select="true"
                        data-id-table="advancedTable"
                        data-click-to-select="true"
+                       data-show-export="true"
+                       data-export-types="['csv']"
+                       data-export-options='{ "fileName": "固定资产数据" }'
                        data-toolbar="#TOOLBAR">
                     <thead>
                     <tr>
                         <th data-field="state" data-checkbox="true"></th>
-                        <th data-field="ctime" data-align="center"> 入库日期</th>
-                        <th data-field="placeid" data-align="center"> 存放地点</th> 
+                        <th data-field="assetid" data-align="center" > 资产ID</th>
                         <th data-field="assetcode" data-align="center" > 物品编码</th>
-                        <th data-field="assetname" data-align="center" > 物品名称</th>
-                        <th data-field="typeid" data-align="center" > 分类</th>
+                        <th data-field="assetname" data-align="center" > 资产名称</th>
+                        <th data-field="typename" data-align="center" > 分类</th>
                         <th data-field="brand"  data-align="center"  > 品牌</th>
                         <th data-field="size"  data-align="center"  >规格</th>
                         <th data-field="unitprice"  data-align="center"  >单价</th>
                         <th data-field="storenum"  data-align="center"  >库存数量</th>
+                        <th data-field="isdisposable" data-align="center"> 是否易耗品</th>
+                        <th data-field="ctime" data-align="center"> 入库日期</th>
                         <th data-field="note"  data-align="center"  >备注</th> 
                     </tr>
                     </thead>
@@ -55,19 +56,22 @@
 <script src="/static/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.js" type="text/javascript"></script>
 <script src="/static/plugins/bootstrap-table/extensions/toolbar/bootstrap-table-toolbar.js" type="text/javascript"></script>
 
-<script src="/static/js/location_dict.js"></script>
+<script src="/static/plugins/bootstrap-table/extensions/export/bootstrap-table-export.js"></script>
+<script src="/static/plugins/bootstrap-table/extensions/export/tableExport.js"></script>
 
 <script type="text/javascript">
-    
-    function editAgent() {
+    $(function () {
+        $('#mainTable').bootstrapTable('hideColumn', 'assetid');
+    });
+    function editAsset() {
         var rows = $('#mainTable').bootstrapTable('getSelections');
         if (rows.length != 1){
-            baModalTipShow("提示", "请选择需要修改的供应商", "d", function () {
+            baModalTipShow("提示", "请选择需要修改的资产", "d", function () {
                 baModalTipToggle();
             });
             return;
         }
-        window.location = "/Agent/newAgent?aid=" + rows[0]["AID"];
+        window.location = "/AssetC/newAsset?id=" + rows[0]["assetid"];
     }
 
     function delAgent() {
@@ -91,35 +95,6 @@
                 }
             });
         });
-    }
-    function unbind() { 
-        baModalTipShow("警告", "您没有权限解绑账号，请联系客服", "w", function () {
-            baModalTipToggle();
-        });
-    }
-    
-    function ban(){ 
-        baModalTipShow("警告", "您没有权限封号，请联系客服", "w", function () {
-            baModalTipToggle();
-        });
-    }
-    //转移房卡
-    function transferRCard(){
-        var rows = $('#mainTable').bootstrapTable('getSelections');
-        if (rows.length != 1){
-            baModalTipShow("提示", "请选择转账对象", "d", function () {
-                baModalTipToggle();
-            });
-            return;
-        }
-        window.location = "/Agent/transferRCard?aid=" + rows[0]["AID"];
-    }
-    function areaFormatter(value, row, index) {
-        return getLocationName(value);
-    }
-    //分享推广
-    function mShare(){
-        window.location = "/Agent/share";
     }
 </script>
 
