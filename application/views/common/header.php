@@ -57,21 +57,21 @@
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <img src="/static/img/avatar04.png" class="user-image" alt="User Image">
-                            <span class="hidden-xs"><?= $agent["AID"] ?></span>
+                            <span class="hidden-xs"><?= $baseInfo["username"] ?></span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header">
                                 <img src="/static/img/avatar04.png" class="img-circle" alt="User Image">
                                 <p>
-                                    <?= $agent["AID"] ?>
-                                    <small></small>
+                                    <?= $baseInfo["username"] ?><br/> 
+                                    <small><?= $baseInfo["phone"] ?></small>
                                 </p>
                             </li>
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="/home/account" class="btn btn-default btn-flat"> 账户</a>
+                                    <a href="/home" class="btn btn-default btn-flat"> 账户</a>
                                 </div>
                                 <div class="pull-right">
                                     <a href="/home/signout" class="btn btn-default btn-flat"> 退出</a>

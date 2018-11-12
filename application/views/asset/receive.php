@@ -2,21 +2,17 @@
     <div class="col-xs-12">
         <div class="box">
             <div class="box-body">
-                <div id="TOOLBAR" class="btn-group">
-
-                    <button title="新增员工" type="button" class="btn btn-default" onclick="javascript:window.location.href='/UserC/newUser'">
-                        新增
+                <div id="TOOLBAR" class="btn-group">  
+                    <button title="新增领用单" type="button" class="btn btn-default" onclick="javascript:window.location.href='/ReceiveC/newform'">
+                        新增领用单
                     </button>
-                    <button title="修改员工" type="button" class="btn btn-default" onclick="editUser();">
-                        修改
-                    </button>
-                    <button title="删除员工" type="button" class="btn btn-default" onclick="delUser();">
-                        删除
+                    <button title="废除领用单" type="button" class="btn btn-default" onclick="del();">
+                        废除领用单
                     </button>
                 </div>
                 <table id="mainTable"
                        data-toggle="table"
-                       data-url="/UserC/getUserList"
+                       data-url="/ReceiveC/getList"
                        data-pagination="true"
                        data-side-pagination="client"
                        data-page-list="[5, 10, 20, 50, 100, 200]"
@@ -29,18 +25,20 @@
                        data-click-to-select="true"
                        data-show-export="true"
                        data-export-types="['csv']"
-                       data-export-options='{ "fileName": "固定资产数据" }'
+                       data-export-options='{ "fileName": "资产领用单" }'
                        data-toolbar="#TOOLBAR">
                     <thead>
                     <tr>
                         <th data-field="state" data-checkbox="true"></th>
-                        <th data-field="userid" data-align="center"> userid</th>
-                        <th data-field="usercode" data-align="center"> 员工编号</th>
-                        <th data-field="username" data-align="center"> 姓名</th>
-                        <th data-field="gender" data-align="center" data-formatter="genderFormatter"> 性别</th>
-                        <th data-field="phone" data-align="center" > 电话</th>
-                        <th data-field="email" data-align="center" > 邮箱</th>
-                        <th data-field="isadmin"  data-align="center" > 是否为管理员</th>
+                        <th data-field="formid" data-align="center" > ID</th>
+                        <th data-field="assetcode" data-align="center" > 物品编码</th>
+                        <th data-field="assetname" data-align="center" > 物品名称</th>
+                        <th data-field="brand"  data-align="center"  > 品牌</th>
+                        <th data-field="size"  data-align="center"  >规格</th> 
+                        <th data-field="username" data-align="center" > 领取人</th>
+                        <th data-field="num"  data-align="center"  >领取数量</th> 
+                        <th data-field="ctime" data-align="center"> 领取日期</th>
+                        <th data-field="note"  data-align="center"  >备注</th> 
                     </tr>
                     </thead>
                 </table>
@@ -60,44 +58,34 @@
 
 <script type="text/javascript">
     $(function () {
-        $('#mainTable').bootstrapTable('hideColumn', 'userid');
+        $('#mainTable').bootstrapTable('hideColumn', 'formid');
     });
-    function genderFormatter(value, row, index) {
-        switch(value){
-            case "0":
-                return "未知";
-            case "1":
-                return "男";
-            case "2":
-                return "女";
-        }
-    }
-    function editUser() {
+    function editAsset() {
         var rows = $('#mainTable').bootstrapTable('getSelections');
         if (rows.length != 1){
-            baModalTipShow("提示", "请选择需要修改的员工", "d", function () {
+            baModalTipShow("提示", "请选择需要修改的资产", "d", function () {
                 baModalTipToggle();
             });
             return;
         }
-        window.location = "/UserC/newUser?id=" + rows[0]["userid"];
+        window.location = "/AssetC/newAsset?id=" + rows[0]["assetid"];
     }
-    function delUser() {
+
+    function del() {
         var rows = $('#mainTable').bootstrapTable('getSelections');
         if (rows.length != 1){
-            baModalTipShow("提示", "请选择需要删除的员工", "d", function () {
+            baModalTipShow("提示", "请选择需要删除的数据", "d", function () {
                 baModalTipToggle();
             });
             return;
         }
-        var userid = rows[0]["userid"];
-        baModalWarningShow("警告", "是否确定删除所选记录", "q", function () {
+        baModalWarningShow("警告", "是否确定删除所选数据", "q", function () {
             baModalWarningToggle();
-            $.post("/UserC/delUser", {userid: userid}, function (response) {
+            $.post("/ReceiveC/delete", {formid: rows[0]["formid"]}, function (response) {
                 if (response.code != "1") {
                     baModalTipShow("错误", response.message, "d");
                 } else {
-                    baModalTipShow("提示", "删除成功", "s", function () {
+                    baModalTipShow("提示", "操作成功", "s", function () {
                         baModalTipToggle();
                         $('#mainTable').bootstrapTable('refresh');
                     });

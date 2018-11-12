@@ -10,7 +10,7 @@ class UserC extends BaseC {
         $this->load->model("UserModel");
     }
     public function index(){
-        $data["agent"]        = $this->agent;
+        $data["baseInfo"]        = $this->baseInfo;
         $data["menuCatagery"] = "员工";
         $data["menuSub"]      = "员工信息管理";
         $data["menuDetail"]   = ""; 
@@ -24,7 +24,7 @@ class UserC extends BaseC {
     }
 
     public function newUser(){
-        $data["agent"]        = $this->agent;
+        $data["baseInfo"]        = $this->baseInfo;
         $data["menuCatagery"] = "员工";
         $data["menuSub"]      = "新增员工信息";
         $data["menuDetail"]   = "";

@@ -34,15 +34,15 @@
     </div><!-- /.login-logo -->
 
     <div class="login-box-body">
-        <p class="login-box-msg">输入账号密码进行登录 </p>
+        <p class="login-box-msg">输入员工工号及密码进行登录 </p>
         <div id="errorLabel" hidden="hidden" class="control-label has-error">
             <label class="control-label">
                 <i class="fa fa-times-circle-o"></i> 
-				<span id="errText"></span><!-- 请输入正确的账号和密码 -->
+		<span id="errText"></span><!-- 请输入正确的账号和密码 -->
             </label>
         </div> 
         <div id="userNameDiv" class="form-group has-feedback">
-            <input id="userName" type="text" class="form-control" placeholder="账号"/>
+            <input id="userName" type="text" class="form-control" placeholder="工号"/>
             <span class="glyphicon glyphicon-user form-control-feedback"></span>
         </div>
         <div id="passwordDiv" class="form-group has-feedback">
@@ -91,16 +91,16 @@
         var pwd = $('#pwd').val();
         var rmm = $("#rememberMe").is(":checked");
         if(userName==""){ 
-			showErr("请输入账号");
+			showErr("请输入工号");
             return false;
         }
         if(pwd==""){ 
 			showErr("请输入密码");
             return false;
         }
-        var reg = /^\d{6}\b/;
+        var reg = /^\d{4}\b/;
         if (!reg.test(userName)) {
-            showErr("请输入正确的账号");
+            showErr("请输入正确的工号");
             return false;
         };
         var $btnLogin = $('#btnLogin');

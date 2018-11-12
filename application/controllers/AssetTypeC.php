@@ -11,7 +11,7 @@ class AssetTypeC extends BaseC {
         $this->load->model("AssetModel");
     }
     public function index() {
-        $data["agent"]        = $this->agent;
+        $data["baseInfo"]        = $this->baseInfo;
         $data["menuCatagery"] = "资产类别管理";
         $data["menuSub"]      = "";
         $data["menuDetail"]   = "";

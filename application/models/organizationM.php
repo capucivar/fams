@@ -12,7 +12,7 @@ class OrganizationM extends CI_Model {
 
     function getOrganList(){
         $DBData = $this->load->database($this->dbName, TRUE);
-        $sql = "SELECT deptid,deptname,parentid FROM department WHERE 1=1 and isvalid=1";
+        $sql = "SELECT deptid,deptname,parentid FROM department WHERE 1=1 and isvalid=1 ";
         $sqlParam = [];
         $sql.="  ORDER BY deptid";
         $query  = $DBData->query($sql,$sqlParam);

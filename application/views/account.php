@@ -10,26 +10,28 @@
                 <ul class="list-group list-group-unbordered"> 
                     <li class="list-group-item">
                         <b>姓名</b> 
-                        <a class="pull-right"><?= $user["username"] ?></a>
+                        <a class="pull-right"><?= $baseInfo["username"] ?></a>
                     </li>
                     <li class="list-group-item">
                         <b>性别</b> 
-                        <a class="pull-right"><?= $user["gender"] ?></a>
+                        <a class="pull-right">
+                            <?= SysDict::GET_GENDER($baseInfo["gender"])?>
+                        </a>
                     </li>
                     <li class="list-group-item">
                         <b>所在部门</b>
-                        <a class="pull-right"><?= $user["deptid"] ?></a>
+                        <a class="pull-right"><?= $baseInfo["deptname"] ?></a>
                     </li>
                     
                     <li class="list-group-item">
                         <b>电话</b>
-                        <a class="pull-right"><?= $user["phone"] ?></a>
+                        <a class="pull-right"><?= $baseInfo["phone"] ?></a>
                     </li>   
                     <li class="list-group-item">
-                        <b>邮箱</b> <a class="pull-right"><?= $user["email"] ?></a>
+                        <b>邮箱</b> <a class="pull-right"><?= $baseInfo["email"] ?></a>
                     </li> 
                     <li class="list-group-item">
-                        <b>最近一次登录时间</b> <a class="pull-right"><?= $user["lastlogin"] ?></a>
+                        <b>最近一次登录时间</b> <a class="pull-right"><?= $baseInfo["logintime"] ?></a>
                     </li>
 
                 </ul> 

@@ -30,6 +30,14 @@ ORDER BY A.typeid,A.ctime DESC";
         $query  = $DBData->query($sql,$sqlParam);
         return $query->result_array();
     }
+    function getStorenumById($assetid){
+        $DBData = $this->load->database($this->dbName, TRUE);
+        $sql = "SELECT * FROM asset WHERE 1=1 and isvalid=1 AND assetid=?";
+        $sqlParam = [$assetid];
+        $query  = $DBData->query($sql,$sqlParam);
+        $row = $query->row_array();
+        return $row["storenum"]; 
+    }
     //根据资产类别获取资产，按照code排序最大的
     function getAssetCodeByType($typeid,$checkIsValid=false){
         $DBData = $this->load->database($this->dbName, TRUE);

@@ -1,7 +1,4 @@
 <?php
-/**
- * 下级代理商
- * **/
 defined('BASEPATH') OR exit('No direct script access allowed');
 include_once(APP_PATH_C . "BaseC.php"); 
 include_once(APP_PATH_L . "StringUtil.php"); 

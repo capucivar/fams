@@ -11,7 +11,7 @@ class AssetC extends BaseC {
         $this->load->model("AssetTypeM");
     }
     public function index() {
-        $data["agent"]        = $this->agent;
+        $data["baseInfo"]        = $this->baseInfo;
         $data["menuCatagery"] = "资产管理";
         $data["menuSub"]      = "";
         $data["menuDetail"]   = "";
@@ -30,7 +30,7 @@ class AssetC extends BaseC {
             $assetrows = $this->AssetModel->getAssetListById($assetid);
             $asset = count($assetrows)>0?$assetrows[0]:$asset;
         }
-        $data["agent"]        = $this->agent;
+        $data["baseInfo"]        = $this->baseInfo;
         $data["asset"]  = $asset;
         $data["menuCatagery"] = "资产入库";
         $data["menuSub"]      = "";

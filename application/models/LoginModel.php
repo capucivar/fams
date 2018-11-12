@@ -16,14 +16,23 @@ class LoginModel extends CI_Model {
      */
     function isLoginValid($username, $pwd) {
         $DBData   = $this->load->database($this->dbName, TRUE);
-        $sql      = "SELECT * FROM `user` WHERE userid=? AND password=? AND isvalid=1";
+        $sql      = "SELECT * FROM `user` WHERE usercode=? AND password=? AND isvalid=1 and isadmin=1";
         $sqlParam = array(
            $username,
            $pwd ); 
         $query    = $DBData->query($sql, $sqlParam);
         return $query->num_rows() > 0;
     }
-    
+     /**
+     * 根据Userid获取usercode
+     */
+    function getUserByCode($usercode) {
+        $DBData   = $this->load->database($this->dbName, TRUE);
+        $sql      = "SELECT * FROM `user` WHERE usercode=? AND isvalid=1 ";
+        $sqlParam = array($usercode); 
+        $query    = $DBData->query($sql, $sqlParam);
+        return $query->row_array();
+    }
     /**
      * 获取登录 token
      */
@@ -50,10 +59,11 @@ class LoginModel extends CI_Model {
         $DBData = $this->load->database($this->dbName, TRUE);
         $sql    = "
                 SELECT
-                        *
+                        `user`.*,ut.ctime as logintime,dt.deptname 
                 FROM
                         `user`
                 INNER JOIN user_token AS ut ON `user`.userid = ut.userid
+                INNER JOIN department AS dt ON `user`.deptid = dt.deptid
                 WHERE
                         ut.token = ?
                 AND `user`.isvalid = 1

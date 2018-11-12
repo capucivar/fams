@@ -26,7 +26,7 @@ class LoginC extends BaseC {
 //            echo "<script type='text/javascript'>window.location.href='/user/account';</script>";
 //            return;
 //        }
-        $data["agent"]        = $this->agent;
+        $data["baseInfo"]        = $this->baseInfo;
         $data["menuCatagery"] = "主页";
         $data["menuSub"]      = "账户冻结";
         $data["menuDetail"]   = "信息概览";
@@ -39,11 +39,13 @@ class LoginC extends BaseC {
     }
 
     public function doLogin() {
-        $uid = $_REQUEST["userName"];
+        $ucode = $_REQUEST["userName"];
         $pwd      = $_REQUEST["pwd"];
-        $rmm      = $_REQUEST["rmm"];  
-        
-        if (!$this->LoginModel->isLoginValid($uid, $pwd)) parent::echoFail("验证失败");
+        $rmm      = $_REQUEST["rmm"];   
+        if (!$this->LoginModel->isLoginValid($ucode, $pwd)) parent::echoFail("验证失败");
+        $user = $this->LoginModel->getUserByCode($ucode);
+        if(empty($user)) parent::echoFail("获取 用户信息 失败"); 
+        $uid = $user["userid"];
         // 获取登录token
         $token = $this->LoginModel->getToken($uid);
         if (empty($token)) parent::echoFail("获取 Token 失败"); 
@@ -75,35 +77,11 @@ class LoginC extends BaseC {
                 $data["AID"]= $aid;
                 $data["CONTENT"]= "首次登陆修改密码";
                 $this->LogModel->saveLog($data); 
-                //向agent_player中添加一条数据
-                $GID = $this->agent["GAMEID"];
-                $this->saveUser($GID); 
+                //向agent_player中添加一条数据 
                 parent::echoSuccess("密码修改成功");
             }else
                 parent::echoFail("密码修改失败");
          }else 
              parent::echoFail("手机验证码验证失败");
-    }
-    public function saveUser($gid){
-        $agent = $this->agent; 
-        $param["GID"] = $gid;
-        $param["UNO"] = $agent["UNO"];
-        $param["WXID"] = $agent["WXID"];
-        $param["CELLPHONE"] = $agent["CELLPHONE"];
-        $param["REMARK"] = "";
-            
-        $user = $this->UserModel->getUserByGid($gid);
-        $result = 0;
-        if($user!=""){
-            //修改 
-            $param["PID"] = $user["PID"];
-            $result = $this->UserModel->updateUserInfo($param);
-        }else{
-            //添加 
-            $param["NICKNAME"] = $agent["ANAME"]; 
-            $param["PAID"] = $agent["AID"];
-            $result = $this->UserModel->saveUserInfo($param);
-        }
-        return $result;
     } 
 }

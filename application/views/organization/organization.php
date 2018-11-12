@@ -4,7 +4,7 @@
             <div class="box-body">
                 <div id="TOOLBAR" class="btn-group">
 
-                    <button title="新增资产" type="button" class="btn btn-default" onclick="newNote();">
+                    <button title="新增资产" id="newBtn" type="button" class="btn btn-default" onclick="newNote();">
                         新增下级
                     </button>
                     <button title="修改资产" type="button" class="btn btn-default" onclick="editNote();">
@@ -51,7 +51,7 @@
                     title:'名称'
                 },{
                     field:'deptid',
-                    title:'ID'
+                    title:'编号'
                 }
             ],
             treeShowField: 'deptname',
@@ -71,6 +71,11 @@
             },
             onClickRow: function (data) {
                 $("#deptname").attr("value",data.deptname);
+                var level = data._level;
+                if (level>1)
+                    $('#newBtn').prop('disabled', true);
+                else
+                    $('#newBtn').prop('disabled', false);
             }
         });
     })

@@ -1,15 +1,16 @@
 <!-- 总代 -->
 <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
-    <section class="sidebar">
-
+    <section class="sidebar"> 
         <!-- Sidebar user panel -->
         <div class="user-panel">
             <div class="pull-left image">
                 <img src="/static/img/avatar04.png" class="img-circle" alt="User Image">
             </div>
+            <div  style="padding-left: 62px;color: white"><?= $baseInfo["username"] ?></div>
             <div class="pull-left info">
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                
             </div>
         </div>
 
@@ -29,8 +30,7 @@
                     <li><a href="/AssetC"><i class="fa fa-user"></i>资产管理</a></li>
 <!--                    <li><a href="/AssetC/newAsset"><i class="fa fa-user"></i>资产入库</a></li>-->
                     <li><a href="/AssetTypeC"><i class="fa fa-user"></i>资产类别管理</a></li>
-                    <li><a href="/AssetC"><i class="fa fa-user"></i>资产领用</a></li>
-                    <li><a href=""><i class="fa fa-user"></i>仓库管理</a></li>
+                    <li><a href="/ReceiveC"><i class="fa fa-user"></i>资产领用</a></li> 
                  </ul>
             </li> 
 

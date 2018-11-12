@@ -10,7 +10,7 @@ class OrganizationC extends BaseC {
         $this->load->model("OrganizationM");
     }
     public function index() {
-        $data["agent"]        = $this->agent;
+        $data["baseInfo"]        = $this->baseInfo;
         $data["menuCatagery"] = "组织架构";
         $data["menuSub"]      = "";
         $data["menuDetail"]   = "";
