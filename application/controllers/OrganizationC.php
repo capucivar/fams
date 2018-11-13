@@ -27,11 +27,11 @@ class OrganizationC extends BaseC {
         echo $data;
     }
     public function newOrganInfo(){
-        $param        = $_REQUEST;
+        $param        = $_REQUEST; 
         $pid = 100;
         //获取最大的一个ID
         $topid = 1;
-        $topData = $this->OrganizationM->getIdBypid($pid);
+        $topData = $this->OrganizationM->getIdBypid($param["parentid"]);
         if (count($topData)>0){
             $topid = ((int)substr($topData[0]["deptid"],-3))+1;
         }

@@ -32,7 +32,7 @@
                 displayTableName: false,
                 escape: false,
                 excelstyles: ['border-bottom', 'border-top', 'border-left', 'border-right'],
-                fileName: '酒鬼棋牌工作薄',
+                fileName: '文件名称',
                 htmlContent: false,
                 ignoreColumn: [],
                 ignoreRow: [],

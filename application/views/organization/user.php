@@ -40,6 +40,7 @@
                         <th data-field="gender" data-align="center" data-formatter="genderFormatter"> 性别</th>
                         <th data-field="phone" data-align="center" > 电话</th>
                         <th data-field="email" data-align="center" > 邮箱</th>
+                        <th data-field="deptname" data-align="center" > 部门</th>
                         <th data-field="isadmin"  data-align="center" > 是否为管理员</th>
                     </tr>
                     </thead>

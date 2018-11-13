@@ -25,7 +25,7 @@
                         <select class="selectpicker" data-live-search="true" id="deptid" name="deptid" onchange="selectOnchange(this)">
                             <option value="0" >请选择</option>
                         </select>&nbsp;&nbsp;
-                        <select class="selectpicker" data-live-search="true" id="deptid2" name="deptid2" onchange="selectOnchange2(this)">
+                        <select class="selectpicker" data-live-search="true" id="deptid2" name="deptid2" >
                             <option value="0" >请选择</option>
                         </select>
                     </div>
@@ -101,8 +101,8 @@
         });
     }
     function bindDeptLevelTwo(parentid) {
-        $("#assetCType").empty();
-        $("#assetCType").append('<option value="0">请选择</option>');
+        $("#deptid2").empty();
+        $("#deptid2").append('<option value="0">请选择</option>');
         $.post("/OrganizationC/getLevelTwo", {parentid:parentid}, function (response) {
             var data = JSON.parse(response);
             $.each(data.data, function (i, n) {

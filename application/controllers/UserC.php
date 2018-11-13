@@ -95,5 +95,5 @@ class UserC extends BaseC {
         } else {
             parent::echoFail("删除失败");
         }
-    }
+    } 
 }

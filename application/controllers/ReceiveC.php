@@ -49,9 +49,12 @@ class ReceiveC extends BaseC {
         if (!parent::checkParam($params_keys,$param))
             parent::echoFail("缺少参数");
         //检测库存数量
-        $storenum = $this->AssetModel->getStorenumById($param["assetid"]);
+        $asset = $this->AssetModel->getStorenumById($param["assetid"]);
+        $storenum = $asset["storenum"];
         if($storenum-$param["num"]<0)
             parent::echoFail("当前库存数量：".$storenum."，少于领用数量");
+        //获取资产是否为易耗品
+        $param["state"] = $asset["isdisposable"]=="0"?1:0; 
         $param["formid"] = StringUtil::randStr(10,'NUMBER');
         $res = $this->ReceiveM->save($param);
         if($res){
@@ -66,6 +69,18 @@ class ReceiveC extends BaseC {
         if (!parent::checkParam($params_keys,$param))
             parent::echoFail("缺少参数");  
         $result = $this->ReceiveM->delete($param);
+        if ($result) {
+            parent::echoSuccess("操作成功");
+        } else {
+            parent::echoFail("操作失败");
+        }
+    }
+    public function back(){
+        $param        = $_REQUEST;
+        $params_keys = ["formid","assetid","num"];
+        if (!parent::checkParam($params_keys,$param))
+            parent::echoFail("缺少参数");  
+        $result = $this->ReceiveM->back($param);
         if ($result) {
             parent::echoSuccess("操作成功");
         } else {

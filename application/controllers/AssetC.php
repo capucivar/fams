@@ -76,7 +76,7 @@ class AssetC extends BaseC {
         echo $typecode.sprintf("%03d",$assetcode);;
     }
     public function saveAsset(){
-        $param        = $_REQUEST;
+        $param        = $_REQUEST; 
         $params_keys = ["typeid","assetname","assetcode","brand","size","unitprice","storenum","isdisposable"];
         if (!parent::checkParam($params_keys,$param))
             parent::echoFail("缺少参数");

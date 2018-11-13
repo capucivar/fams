@@ -16,14 +16,17 @@ class ReceiveM extends CI_Model {
         $DBData = $this->load->database($this->dbName, TRUE);
         $sql = "SELECT
 	a.formid,
+        a.assetid,
 	b.assetcode,
 	b.assetname,
 	b.brand,
 	b.size,
+        b.isdisposable,
 	c.username,
 	a.num,
 	a.ctime,
-	a.note
+	a.note,
+        a.state as status
 FROM
 	receive_form AS a
 INNER JOIN asset AS b ON a.assetid = b.assetid
@@ -44,16 +47,18 @@ ORDER BY
                                 `userid`,
                                 `num`, 
                                 `note`,
+                                `state`,
                                 `isvalid`,
                                 `ctime`,
                                 `mtime`)
-                       VALUES (?,?,?,?,?,?,?,?)";
+                       VALUES (?,?,?,?,?,?,?,?,?)";
         $sqlParam1 = array(
             $param["formid"],
             $param["assetid"],
             $param["userid"],
             $param["num"],
             $param["note"], 
+            $param["state"], 
             1,
             date("Y-m-d H:i:s", time()),
             date("Y-m-d H:i:s", time())
@@ -81,5 +86,26 @@ ORDER BY
         );
         $DBData->query($sql, $sqlParam);
         return $DBData->affected_rows() == 1;
+    }
+    function back($param){ 
+        $DBData   = $this->load->database($this->dbName, TRUE);
+        $sql1      = "UPDATE receive_form SET 
+         state = ?, 
+         mtime = ?
+         WHERE formid=?";
+        $sqlParam1 = array(
+            2,
+            date("Y-m-d H:i:s", time()),
+            $param["formid"]
+        );
+        $sql2 = "update asset SET storenum=storenum+? WHERE assetid=?";
+        $sqlParam2 = array(
+            $param["num"],
+            $param["assetid"]);
+        $DBData->trans_start();
+        $DBData->query($sql1, $sqlParam1);
+        $DBData->query($sql2, $sqlParam2);
+        $DBData->trans_complete();
+        return $DBData->trans_status();
     }
 }

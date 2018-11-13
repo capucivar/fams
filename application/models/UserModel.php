@@ -28,7 +28,11 @@ class UserModel extends CI_Model {
     
     function getUserList(){
         $DBData = $this->load->database($this->dbName, TRUE);
-        $sql = "SELECT * FROM `user` WHERE state = 1 AND isvalid=1 ORDER BY CTIME DESC";
+        $sql = "SELECT a.*,b.deptname
+FROM `user` as a
+INNER JOIN department as b ON a.deptid=b.deptid
+WHERE state = 1 AND a.isvalid = 1
+ORDER BY a.CTIME DESC";
         $param = [];
         $query  = $DBData->query($sql, $param);
         return $query->result_array();

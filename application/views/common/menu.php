@@ -18,31 +18,39 @@
         <ul class="sidebar-menu">
 
             <li class="treeview">
-                <a href="/Home/account">
+                <a href="/home">
                     <i class="fa fa-user"></i> <span>首页</span> 
                 </a>
             </li>
             <li class="treeview">
                 <a href="">
-                    <i class="fa fa-users"></i> <span>资产管理</span>  <i class="fa fa-angle-left pull-right"></i>
+                    <i class="fa fa-tasks"></i> <span>资产管理</span>  <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/AssetC"><i class="fa fa-user"></i>资产管理</a></li>
+                    <li><a href="/AssetC"><i class="fa fa-tasks"></i>资产管理</a></li>
 <!--                    <li><a href="/AssetC/newAsset"><i class="fa fa-user"></i>资产入库</a></li>-->
-                    <li><a href="/AssetTypeC"><i class="fa fa-user"></i>资产类别管理</a></li>
-                    <li><a href="/ReceiveC"><i class="fa fa-user"></i>资产领用</a></li> 
+                    <li><a href="/AssetTypeC"><i class="fa fa-compress"></i>资产类别管理</a></li>
+                    <li><a href="/ReceiveC"><i class="fa fa-windows"></i>资产领用</a></li> 
                  </ul>
             </li> 
 
             <li class="treeview">
                 <a href="">
-                    <i class="fa fa-gamepad"></i> <span>行政管理</span>  <i class="fa fa-angle-left pull-right"></i>
+                    <i class="fa fa-briefcase"></i> <span>行政管理</span>  <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/OrganizationC"><i class="fa fa-gamepad"></i>组织架构管理</a></li>
-                    <li><a href="/UserC"><i class="fa fa-gamepad"></i>员工管理</a></li>
+                    <li><a href="/OrganizationC"><i class="fa fa-th"></i>组织架构管理</a></li>
+                    <li><a href="/UserC"><i class="fa fa-users"></i>员工管理</a></li>
                  </ul>
-            </li>  
+            </li>
+             <li class="treeview">
+                <a href="">
+                    <i class="fa fa-wrench"></i> <span>个人设置</span>  <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="/ChangePwdC"><i class="fa fa-cog"></i>修改密码</a></li> 
+                 </ul>
+            </li>
         </ul>
     </section>
     <!-- /.sidebar -->

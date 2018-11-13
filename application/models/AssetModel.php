@@ -35,8 +35,8 @@ ORDER BY A.typeid,A.ctime DESC";
         $sql = "SELECT * FROM asset WHERE 1=1 and isvalid=1 AND assetid=?";
         $sqlParam = [$assetid];
         $query  = $DBData->query($sql,$sqlParam);
-        $row = $query->row_array();
-        return $row["storenum"]; 
+        return $query->row_array();
+//        return $row["storenum"]; 
     }
     //根据资产类别获取资产，按照code排序最大的
     function getAssetCodeByType($typeid,$checkIsValid=false){
@@ -79,7 +79,7 @@ ORDER BY A.typeid,A.ctime DESC";
             $param["size"],
             $param["unitprice"],
             $param["storenum"],
-            $param["isdisposable"],
+            (int)$param["isdisposable"],
             $param["note"],
             1,
             date("Y-m-d H:i:s", time()),
@@ -113,7 +113,7 @@ ORDER BY A.typeid,A.ctime DESC";
              $param["size"],
              $param["unitprice"],
              $param["storenum"],
-             $param["isdisposable"],
+             (int)$param["isdisposable"],
              $param["note"],
              date("Y-m-d H:i:s", time()),
              $param["assetid"] 
