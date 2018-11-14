@@ -21,7 +21,7 @@ class UserModel extends CI_Model {
         $sql      = "SELECT * FROM `user` WHERE phone=? AND PASSWORD=? AND state=1 AND isvalid=1 and isadmin=1";
         $sqlParam = array(
            $uid,
-           $pwd ); 
+           md5($pwd));
         $query    = $DBData->query($sql, $sqlParam);
         return $query->num_rows() > 0;
     }
@@ -57,25 +57,29 @@ ORDER BY a.CTIME DESC";
         $sql      = "INSERT INTO `user` (
                                 `userid`, 
                                 `deptid`,
+                                `deptid2`,
                                 `usercode`,
                                 `password`, 
                                 `username`,
                                 `gender`,
                                 `phone`,
                                 `email`,
+                                `isadmin`,
                                 `isvalid`,
                                 `ctime`,
                                 `mtime` )
-                       VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+                       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
         $sqlParam = array(
             StringUtil::randStr(10,"NUMBER"),
             $param["deptid"],
+            $param["deptid2"],
             $param["usercode"],
             $param["password"],
             $param["username"],
             $param["gender"],
             $param["phone"],
             $param["email"],
+            $param["isadmin"],
             1,
             date("Y-m-d H:i:s", time()),
             date("Y-m-d H:i:s", time()) 
@@ -100,18 +104,22 @@ ORDER BY a.CTIME DESC";
                 `user` 
             SET 
                 `deptid` = ?,
+                `deptid2` = ?,
                 `username` = ?,
                 `gender`=?,
                 `phone`=?,
                 `email` = ?,
+                `isadmin` = ?,
                 `mtime`=?
             WHERE `userid`=?";
         $sqlParam = [
             $param["deptid"],
+            $param["deptid2"],
             $param["username"],
             $param["gender"],
             $param["phone"],
             $param["email"],
+            (int)$param["isadmin"],
             date("Y-m-d H:i:s", time()),
             $param["userid"],
         ];

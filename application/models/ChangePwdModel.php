@@ -65,7 +65,7 @@ ORDER BY CTIME DESC ";
     function changePwd($param){
         $DBData   = $this->load->database($this->dbName, TRUE);
         $sql1 = "UPDATE user SET password = ? ,mtime = ? WHERE userid = ? AND isvalid = 1";
-        $sqlParam1 = array($param["newpwd"],date("Y-m-d H:i:s",  time()), $param["userid"]);
+        $sqlParam1 = array( md5($param["newpwd"]),date("Y-m-d H:i:s",  time()), $param["userid"]);
         $sql2 = "UPDATE vcode SET STATE = 0 ,MTIME = ? WHERE phone = ? AND isvalid = 1";
         $sqlParam2 = array(date("Y-m-d H:i:s",  time()), $param["phone"]); 
         $sql3 = "DELETE FROM user_token WHERE userid=?";

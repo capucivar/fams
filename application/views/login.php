@@ -87,20 +87,22 @@
         };
     });
     function doLogin() {
+        var name_obj = $('#userNameDiv');
+        var pwd_obj = $('#passwordDiv');
         var userName = $('#userName').val();
         var pwd = $('#pwd').val();
         var rmm = $("#rememberMe").is(":checked");
         if(userName==""){ 
-			showErr("请输入工号");
+			showErr(name_obj,"请输入工号");
             return false;
         }
         if(pwd==""){ 
-			showErr("请输入密码");
+			showErr(pwd_obj,"请输入密码");
             return false;
         }
         var reg = /^\d{4}\b/;
         if (!reg.test(userName)) {
-            showErr("请输入正确的工号");
+            showErr(name_obj,"请输入正确的工号");
             return false;
         };
         var $btnLogin = $('#btnLogin');
@@ -108,19 +110,24 @@
         $btnLogin.html('<i class="fa fa-spinner fa-pulse"></i>登录中');
         $.post("/LoginC/doLogin", {userName: userName, pwd: pwd, rmm: rmm}, function (data) {
             if (data.code != "1") {
+                showErr(null,"请输入正确的账号和密码");
                 $('#userNameDiv').addClass("has-error");
                 $('#passwordDiv').addClass("has-error");
                 $btnLogin.removeClass("disabled");
                 $btnLogin.html("登录");
-                $('#errorLabel').show();
+//                $('#errorLabel').show();
+
             } else { 
-                window.location = "/Home";
+                window.location = "/home";
             }
         });
     }
 	
-	function showErr(errMsg){
-		$('#userNameDiv').addClass("has-error");
+	function showErr(obj,errMsg){
+		$('#userNameDiv').removeClass("has-error");
+        $('#passwordDiv').removeClass("has-error");
+        if(obj!=null)
+            obj.addClass("has-error");
 		$('#errText')[0].innerHTML = errMsg ;
 		$('#errorLabel').show();
 	}

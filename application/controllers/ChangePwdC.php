@@ -54,8 +54,8 @@ class ChangePwdC extends BaseC {
     public function changePwd(){ 
         $param = $_REQUEST; 
         $param["userid"] = $this->baseInfo["userid"]; 
-        $usercode = $this->baseInfo["usercode"]; 
-        $oldPwd = $param["oldpwd"]; 
+        $usercode = $this->baseInfo["usercode"];
+        $oldPwd = $param["oldpwd"];
         if($this->LoginModel->isLoginValid($usercode,$oldPwd)){ //旧密码验证
             if($this->ChangePwdModel->checkVCode($param)){//验证码验证
                 if($this->ChangePwdModel->changePwd($param)){//修改密码 

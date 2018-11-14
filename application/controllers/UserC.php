@@ -66,7 +66,7 @@ class UserC extends BaseC {
         if (!parent::checkParam($params_keys,$param))
             parent::echoFail("缺少参数");
         $userid = $param["userid"];
-        $param["password"] = "123456";
+        $param["password"] = md5("123456");
         $flg = empty($userid)?true:false;
         $isMobileExist = $this->UserModel->isMobileExist($param["phone"],$param["phone2"]);
         if ($isMobileExist){

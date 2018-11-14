@@ -19,7 +19,7 @@ class LoginModel extends CI_Model {
         $sql      = "SELECT * FROM `user` WHERE usercode=? AND password=? AND isvalid=1 and isadmin=1";
         $sqlParam = array(
            $username,
-           $pwd ); 
+            md5($pwd));
         $query    = $DBData->query($sql, $sqlParam);
         return $query->num_rows() > 0;
     }
