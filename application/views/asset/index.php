@@ -10,6 +10,22 @@
                     <button title="修改资产" type="button" class="btn btn-default" onclick="editAsset();">
                         修改 
                     </button>
+
+                    <!--筛选：开始日期-->
+                    <div class='input-group date' id='datetimepicker1' style="width: 200px; float: left; margin-left: 10px">
+                        <input type='text' class="form-control" id="sdate" name="sdate" placeholder="开始日期" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                    <!--筛选：结束日期-->
+                    <div class='input-group date' id='datetimepicker2' style="width: 200px; float: left;margin-left: 10px">
+                        <input type='text' class="form-control" id="edate" name="edate" placeholder="结束日期" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+
                 </div>
                 <table id="mainTable"
                        data-toggle="table"
@@ -59,10 +75,56 @@
 <script src="/static/plugins/bootstrap-table/extensions/export/bootstrap-table-export.js"></script>
 <script src="/static/plugins/bootstrap-table/extensions/export/tableExport.js"></script>
 
+<link href="/static/bootstrap/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+<script src="/static/bootstrap/js/bootstrap-datetimepicker.min.js"></script>
+<script src="/static/bootstrap/js/bootstrap-datetimepicker.zh-CN.js"></script>
+
 <script type="text/javascript">
     $(function () {
+
+        var picker1 = $('#datetimepicker1').datetimepicker({
+            language: 'zh-CN',
+            format: 'yyyy-mm-dd',
+            minView: "month",
+            todayBtn:  1,
+            autoclose: 1
+        });
+        var picker2 = $('#datetimepicker2').datetimepicker({
+            language: 'zh-CN',
+            format: 'yyyy-mm-d',
+            minView: "month",
+            todayBtn:  1,
+            autoclose: 1
+        });
+        //动态设置最大值
+        picker1.on('change', function (e) {
+            picker2.datetimepicker('setStartDate',e.target.value);
+            if($("#edate").val()!="")
+                refreshTbl();
+        });
+        picker2.on('change', function (e) {
+            if($("#sdate").val()==""){
+                baModalTipShow("提示", "请先选择开始日期", "d");
+                $("#edate").val("");
+            }
+            refreshTbl();
+        });
+
         $('#mainTable').bootstrapTable('hideColumn', 'assetid');
     });
+
+    function refreshTbl() {
+        var s = $("#sdate").val();
+        var e = $("#edate").val();
+        var level = $("#LEVEL").val();
+        var url = "/AssetC/getAsset?a=1";
+        if(s!="" && e!="")
+            url+="&s="+s+"&e="+e;
+        if(level!="")
+            url+="&l="+level;
+        $('#mainTable').bootstrapTable('refresh',{url:url});
+    }
+
     function editAsset() {
         var rows = $('#mainTable').bootstrapTable('getSelections');
         if (rows.length != 1){

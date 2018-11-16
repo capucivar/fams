@@ -10,12 +10,14 @@ class AssetModel extends CI_Model {
         parent::__construct(); 
     } 
      
-    function getAssetList(){
+    function getAssetList($sdate,$edate){
         $DBData = $this->load->database($this->dbName, TRUE);
         $sql = "SELECT A.assetid,A.assetcode,A.assetname,B.typename,A.brand,A.size,A.storenum,A.isdisposable,A.unitprice,A.note,A.ctime FROM asset as A
 INNER JOIN assetype as B ON A.typeid=B.typeid
-WHERE 1=1 and A.isvalid=1
-ORDER BY A.typeid,A.ctime DESC";
+WHERE 1=1 and A.isvalid=1 ";
+        if ($sdate!=null && $edate!=null)
+            $sql.=" and A.ctime between '".$sdate."' and '".$edate."' ";
+        $sql.=" ORDER BY A.typeid,A.ctime DESC";
         $sqlParam = [];
         $query  = $DBData->query($sql,$sqlParam);
         return $query->result_array();

@@ -43,8 +43,10 @@ class AssetC extends BaseC {
         $this->load->view('common/footer');
     }
     
-    public function getAsset(){ 
-        $rows   = $this->AssetModel->getAssetList();
+    public function getAsset(){
+        $sdate = empty($_REQUEST["s"])? null : $_REQUEST["s"]." 00:00:00";
+        $edate = empty($_REQUEST["e"])? null : $_REQUEST["e"]." 23:59:59";
+        $rows   = $this->AssetModel->getAssetList($sdate,$edate);
         $count  = count($rows);
         parent::echoLocalBootstrapTableData($rows, $count);
     }

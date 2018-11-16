@@ -12,7 +12,7 @@ class ReceiveM extends CI_Model {
         parent::__construct();
     }
 
-    function getList(){
+    function getList($sdate,$edate){
         $DBData = $this->load->database($this->dbName, TRUE);
         $sql = "SELECT
 	a.formid,
@@ -32,9 +32,10 @@ FROM
 INNER JOIN asset AS b ON a.assetid = b.assetid
 INNER JOIN `user` AS c ON a.userid = c.userid
 WHERE
-	a.isvalid = 1
-ORDER BY
-	ctime DESC";
+	a.isvalid = 1 ";
+        if ($sdate!=null && $edate!=null)
+            $sql.=" and a.ctime between '".$sdate."' and '".$edate."' ";
+        $sql.=" ORDER BY ctime DESC";
         $sqlParam = [];
         $query  = $DBData->query($sql);
         return $query->result_array();

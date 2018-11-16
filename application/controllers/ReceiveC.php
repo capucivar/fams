@@ -38,8 +38,10 @@ class ReceiveC extends BaseC {
         $this->load->view('common/footer');
     }
     
-    public function getList(){ 
-        $rows   = $this->ReceiveM->getList();
+    public function getList(){
+        $sdate = empty($_REQUEST["s"])? null : $_REQUEST["s"]." 00:00:00";
+        $edate = empty($_REQUEST["e"])? null : $_REQUEST["e"]." 23:59:59";
+        $rows   = $this->ReceiveM->getList($sdate,$edate);
         $count  = count($rows);
         parent::echoLocalBootstrapTableData($rows, $count);
     }
